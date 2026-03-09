@@ -1,4 +1,4 @@
-Node-based FSM AI package for Unity
+![Screenshot](scr1.png)
 
 > [!IMPORTANT]
 > FSMAI is built on xNode package which must be installed before attempting to install FSMAI
