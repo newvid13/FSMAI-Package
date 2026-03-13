@@ -11,9 +11,11 @@ namespace FSMAI
         [SerializeField] bool isActive;
         [SerializeField] float updateFrequency;
 
-        public FSMState currentState;
+        [HideInInspector] public FSMState currentState;
         FSMState_Any anyState;
         Dictionary<Type, Component> components = new Dictionary<Type, Component>();
+
+        #region Initialize
 
         private void Awake()
         {
@@ -52,6 +54,10 @@ namespace FSMAI
             }
         }
 
+        #endregion
+
+        #region Run and Change State
+
         private void RunMachine()
         {
             if (!isActive)
@@ -73,6 +79,10 @@ namespace FSMAI
             currentState.OnEnter(this);
         }
 
+        #endregion
+
+        #region GetComponent and Enable/Disable
+
         public new T GetComponent<T>() where T : Component
         {
             if (components.ContainsKey(typeof(T)))
@@ -93,6 +103,8 @@ namespace FSMAI
         {
             isActive = state;
         }
+
+        #endregion
     }
 
 }
