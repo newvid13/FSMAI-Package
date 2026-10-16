@@ -6,24 +6,24 @@ namespace FSMAI
     public class FSMTransitionFork : FSMNode
     {
         [Input(backingValue = ShowBackingValue.Never)] public int entry;
-        [Output] public FSMStateBase trueState;
-        [Output] public FSMStateBase falseState;
+        [Output] public FSMNode trueState;
+        [Output] public FSMNode falseState;
 
-        public FSMStateBase ForkResult(bool decisionResult)
+        public FSMNode ForkResult(bool decisionResult)
         {
-            FSMStateBase returnState;
+            FSMNode returnState = null;
 
-            if (decisionResult)
-                returnState = GetOutputPort("trueState").Connection.node as FSMStateBase;
-            else
-                returnState = GetOutputPort("falseState").Connection.node as FSMStateBase;
+            if (decisionResult && GetOutputPort("trueState").Connection != null)
+                returnState = GetOutputPort("trueState").Connection.node as FSMNode;
+            else if (!decisionResult && GetOutputPort("falseState").Connection != null)
+                returnState = GetOutputPort("falseState").Connection.node as FSMNode;
 
             return returnState;
         }
 
         private void Reset()
         {
-            name = "Fork";
+            name = "FORK";
         }
     }
 

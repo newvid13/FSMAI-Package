@@ -8,10 +8,9 @@ namespace FSMAI
     public class StateMachine : MonoBehaviour
     {
         [SerializeField] FSMGraph AIGraph;
-        [SerializeField] bool isActive;
         [SerializeField] float updateFrequency;
 
-        [HideInInspector] public FSMState currentState;
+        FSMState currentState;
         FSMState_Any anyState;
         Dictionary<Type, Component> components = new Dictionary<Type, Component>();
 
@@ -33,7 +32,8 @@ namespace FSMAI
                     NodePort outPort = startNode.GetOutputPort("exit").Connection;
                     if (outPort != null)
                     {
-                        ChangeState(outPort.node as FSMState);
+                        currentState = outPort.node as FSMState;
+                        currentState.OnEnter(this);
                         return;
                     }
                 }
@@ -60,28 +60,23 @@ namespace FSMAI
 
         private void RunMachine()
         {
-            if (!isActive)
-                return;
-
-            if (anyState != null)
-                anyState.OnUpdate(this);
+            anyState.OnUpdate(this);
             currentState.OnUpdate(this);
         }
 
         public void ChangeState(FSMState newState)
         {
             if (newState == currentState)
-                Debug.Log("Tried to change into current state");
+                Debug.Log(gameObject.name + " new state the same as current state");
 
-            if (currentState != null)
-                currentState.OnExit(this);
+            currentState.OnExit(this);
             currentState = newState;
             currentState.OnEnter(this);
         }
 
         #endregion
 
-        #region GetComponent and Enable/Disable
+        #region GetComponents
 
         public new T GetComponent<T>() where T : Component
         {
@@ -97,11 +92,6 @@ namespace FSMAI
 
             Debug.Log("No Such Component");
             return null;
-        }
-
-        public void ToggleActive(bool state)
-        {
-            isActive = state;
         }
 
         #endregion

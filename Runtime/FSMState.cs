@@ -4,7 +4,7 @@ using UnityEngine;
 namespace FSMAI
 {
     [CreateNodeMenu("State Node"), NodeWidth(350), NodeTint("#4A5423")]
-    public class FSMState : FSMStateBase
+    public class FSMState : FSMNode
     {
         [Input(backingValue = ShowBackingValue.Never)] public int entry;
 
@@ -38,9 +38,9 @@ namespace FSMAI
             for (int i = 0; i < transitions.Count; i++)
             {
                 FSMTransitionFork connectedFork = GetOutputPort("transitions " + i.ToString()).Connection.node as FSMTransitionFork;
-                FSMStateBase returnedState = connectedFork.ForkResult(transitions[i].Decide(machine));
+                FSMNode returnedState = connectedFork.ForkResult(transitions[i].Decide(machine));
 
-                if (returnedState is not FSMState_StayInCurrent)
+                if (returnedState != null)
                 {
                     machine.ChangeState(returnedState as FSMState);
                     break;

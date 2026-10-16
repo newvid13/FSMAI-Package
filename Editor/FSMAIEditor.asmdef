@@ -1,9 +1,10 @@
 {
-    "name": "Oldwiolence.FSMAI",
-    "rootNamespace": "",
+    "name": "FSMAIEditor",
+    "rootNamespace": "FSMAI",
     "references": [
         "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
-        "GUID:002c1bbed08fa44d282ef34fd5edb138"
+        "GUID:002c1bbed08fa44d282ef34fd5edb138",
+        "GUID:95809dc01e8a15449a528803a7f8cfa3"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
